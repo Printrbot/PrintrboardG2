@@ -1,0 +1,109 @@
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_Klipper_firmware_12345-if00
+baud: 250000
+
+[stepper_x]
+step_pin: PB15
+dir_pin: !PA16
+enable_pin: !PB16
+step_distance: .0125
+endstop_pin: ^PA11
+position_endstop: 0
+position_max: 200
+homing_speed: 30
+homing_retract_dist: 3.0
+second_homing_speed:20
+
+[output_pin motor_x_pwm]
+pin: PB17
+pwm: True
+scale: 2.25
+cycle_time: 0.00001
+
+[stepper_y]
+step_pin: PA29
+dir_pin: !PB1
+enable_pin: !PB0
+step_distance: .0125
+endstop_pin: ^PB26
+position_endstop: 0
+position_max: 150
+homing_speed: 30
+homing_retract_dist: 5
+second_homing_speed:20
+homing_positive_dir:true
+
+
+[output_pin motor_y_pwm]
+pin: PB19
+pwm: True
+scale: 2.25
+cycle_time: 0.00001
+
+[stepper_z]
+step_pin: PA21
+dir_pin: PA26
+enable_pin: !PA25
+step_distance: .0025
+endstop_pin: ^!PA10
+position_endstop: 0
+position_max: 220
+homing_speed: 30
+homing_retract_dist: 3.0
+second_homing_speed:8
+
+
+[output_pin motor_z_pwm]
+pin: PB18
+pwm: True
+scale: 2.25
+cycle_time: 0.00001
+
+[extruder]
+step_pin: PB14
+dir_pin: PB23
+enable_pin: !PB22
+step_distance: .002
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: PA5
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PA23
+control: pid
+pid_Kp: 22.2
+pid_Ki: 1.08
+pid_Kd: 114
+min_temp: 0
+max_temp: 250
+
+[output_pin motor_e_pwm]
+pin: PA2
+pwm: True
+scale: 2.25
+cycle_time: 0.00001
+
+#[heater_bed]
+#heater_pin: PA5 PB24
+#sensor_type: EPCOS 100K B57560G104F
+#sensor_pin: PA4
+#control: watermark
+#max_temp: 110
+
+[fan]
+pin: PA6
+#pin: PB25
+#pin: PB27
+
+#[heater_fan nozzle_cooling_fan]
+#pin: B25
+
+[printer]
+kinematics: cartesian
+max_velocity: 350
+max_accel: 2000
+max_z_velocity: 10
+max_z_accel: 300
+square_corner_velocity: 5.0
+
+[static_digital_output step_config]
+pins: PA19, PB20, PA27, PB10
