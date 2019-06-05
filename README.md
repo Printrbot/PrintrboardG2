@@ -3,7 +3,10 @@
 32bit Controller - Printrbot Simple Pro
 
 ## Klipper
-https://www.klipper3d.org/
+
+Just download the config file and follow the installation instructions.
+
+https://www.klipper3d.org/Installation.html
 
 https://github.com/KevinOConnor/klipper/issues/1121
 
@@ -11,10 +14,8 @@ https://github.com/KevinOConnor/klipper/issues/1121
 TinyG
 https://github.com/abdrumm/printrbot-docs
 
-
 ## Other Firmware - No longer in devlopment 
 
-Marlin
 Marlin 2.0 - Prints but some minor timing issues still exist
 https://github.com/MarlinFirmware/Marlin/issues/13020
 
