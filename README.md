@@ -2,28 +2,29 @@
 
 32bit Controller - Printrbot Simple Pro
 
-## Klipper
+#Klipper
 https://www.klipper3d.org/
+
 https://github.com/KevinOConnor/klipper/issues/1121
 
-##Stock Firmware
+#Stock Firmware
 TinyG
 https://github.com/abdrumm/printrbot-docs
 
 
-##Other Firmware - No longer in devlopment 
+#Other Firmware - No longer in devlopment 
 
-# Marlin
- Marlin 2.0 - Prints but some minor timing issues still exist
- https://github.com/MarlinFirmware/Marlin/issues/13020
+Marlin
+Marlin 2.0 - Prints but some minor timing issues still exist
+https://github.com/MarlinFirmware/Marlin/issues/13020
 
-#ESP3D Gui for the Printrhub Display
+ESP3D Gui for the Printrhub Display
 https://github.com/luc-github/ESP3D/issues/299
 
-#Powershell Script for Uploading Gcode locally
+Powershell Script for Uploading Gcode locally
 [PrintrBotSelfHost](https://github.com/Printrbot/PrintrBotSelfHost)
 
-#Printrbot-g2-console
+Printrbot-g2-console
 https://github.com/abdrumm/printrbot-docs
 
 *Power-Enable Bypass*
