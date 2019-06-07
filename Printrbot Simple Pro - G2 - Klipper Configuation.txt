@@ -20,12 +20,12 @@ dir_pin: !PB1
 enable_pin: !PB0
 step_distance: .0125
 endstop_pin: ^PB26
-position_endstop: 160
-position_max: 160
+position_endstop: 150
+position_max: 165
 homing_speed: 60
 homing_retract_dist: 5
-second_homing_speed: 20
-homing_positive_dir: true
+second_homing_speed:20
+homing_positive_dir:true
 
 [stepper_z]
 step_pin: PA21
@@ -37,9 +37,9 @@ endstop_pin: probe:z_virtual_endstop
 position_endstop: 0
 position_min: -2
 position_max: 200
-homing_speed: 20
+homing_speed: 30
 homing_retract_dist: 4.0
-second_homing_speed: 12
+second_homing_speed:8
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -91,23 +91,25 @@ resistance3: 189
 step_pin: PB14
 dir_pin: PB23
 enable_pin: !PB22
-step_distance: 0.00793650793650793650793650793651
-nozzle_diameter: 0.3
+step_distance = 0.0079051383
+nozzle_diameter: 0.4
 filament_diameter: 1.750
-max_extrude_cross_section: 4.0
+max_extrude_cross_section: 5
+max_extrude_only_distance: 150
 pressure_advance: 0.05
 pressure_advance_lookahead_time: 0.010
 heater_pin: PA5
 max_power: 1.0
 sensor_type: G2
 sensor_pin: PA23
-static_resistor: 4700
-control = pid
-pid_kp = 39.658
-pid_ki = 4.558
-pid_kd = 86.255
+inline_resistor: 4700
+#control = pid
+#pid_kp = 39.658
+#pid_ki = 4.558
+#pid_kd = 86.255
 min_temp: 0
 max_temp: 290
+min_extrude_temp: 170
 [verify_heater extruder]
 heating_gain: 2
 check_gain_time:25
@@ -117,15 +119,13 @@ max_error: 160
 gcode: M84
 timeout: 600
 
-
 #[heater_bed]
 #heater_pin: PB24
-#sensor_type: G2
-#static_resistor: 4700
+#sensor_type: EPCOS 100K B57560G104F
 #sensor_pin: PA4
 #control: watermark
 #min_temp: 0
-#max_temp: 100
+#max_temp: 110
 
 [fan]
 pin: PB27
@@ -138,12 +138,12 @@ fan_speed: 1
 
 [printer]
 kinematics: cartesian
-max_velocity: 400
+max_velocity: 500
 max_accel: 2000
-max_accel_to_decel:1500
+max_accel_to_decel:1250
 max_z_velocity: 15
-max_z_accel: 300
-square_corner_velocity: 20
+max_z_accel: 150
+square_corner_velocity: 25
 
 [static_digital_output step_config]
 pins: PA19, PB20, PA27, PB10
@@ -151,7 +151,6 @@ pins: PA19, PB20, PA27, PB10
 #[endstop_phase stepper_z]
 #phases: 147
 #endstop_accuracy: 0.200
-
 
 [temperature_sensor my_sensor]
 sensor_type: G2
@@ -173,76 +172,76 @@ gcode:
 [pause_resume]
 recover_velocity: 15
 
+[idle_timeout]
+gcode: M84
+#   A list of G-Code commands (one per line; subsequent lines
+#   indented) to execute on an idle timeout. The default is to run
+#   "TURN_OFF_HEATERS" and "M84".
+timeout: 600
+
 [probe]
+x_offset = 20
 pin: ^!PA10
-x_offset: 20
-z_offset: 0
-speed: 8
-#activate_gcode:
-#deactivate_gcode:
-
-[bed_tilt]
-#x_adjust: 0
-#   The amount to add to each move's Z height for each mm on the X
-#   axis. The default is 0.
-#y_adjust: 0
-#   The amount to add to each move's Z height for each mm on the Y
-#   axis. The default is 0.
-#z_adjust: 0
-#   The amount to add to the Z height when the nozzle is nominally at
-#   0,0. The default is 0.
-# The remaining parameters control a BED_TILT_CALIBRATE extended
-# g-code command that may be used to calibrate appropriate x and y
-# adjustment parameters.
-points: 
-	0,145
-	0,0
-	180,82
-speed: 150
-#horizontal_move_z: 5
-#   The height (in mm) that the head should be commanded to move to
-#   just prior to starting a probe operation. The default is 5.
-samples: 2
-#   The number of times to probe each point.  The probed z-values
-#   will be averaged.  The default is to probe 1 time.
-samples_result: average
-#   One can choose median or average between probes samples
-#   The default is average.
+speed = 15
+samples: 1
+z_offset = 0.025
 sample_retract_dist: 2.0
-#   The distance (in mm) to retract between each sample if
-#   sampling more than once.  Default is 2mm
+samples_result: average
 
-#[bed_mesh]
-#horizontal_move_z: 1
-#samples: 2
-#sample_retract_dist: 3
-#min_point: 0,10
-#max_point: 180,150
-#probe_count: 3,3
-#bicubic_tension: .2
-#mesh_pps: 2,2
-#samples_result: average
-#algorithm: bicubic
-#samples_result: average
+[bed_mesh]
+speed = 350
+min_point: 0,5
+max_point: 180,140
+probe_count = 8,6
+bicubic_tension = .2
+mesh_pps = 2,2
+algorithm = bicubic
 
 [gcode_macro G29]
 gcode:
- BED_TILT_CALIBRATE
+ BED_MESH_CALIBRATE
 
 [gcode_macro G27]
 gcode:
  G28
  G1 Z10
  PROBE_CALIBRATE
-
 [gcode_macro M500]
 gcode:
  SAVE_CONFIG
-
 [gcode_macro M501]
 gcode:
  STATUS
-
 [gcode_macro M503]
 gcode:
  HELP
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 39.168
+#*# pid_ki = 4.352
+#*# pid_kd = 88.127
+#*#
+#*# [bed_mesh default]
+#*# points =
+#*# 	  -0.152500, -0.135000, -0.130000, -0.120000, -0.120000, -0.120000, -0.115000, -0.117500
+#*# 	  -0.105000, -0.100000, -0.102500, -0.097500, -0.107500, -0.105000, -0.102500, -0.102500
+#*# 	  -0.060000, -0.067500, -0.075000, -0.070000, -0.072500, -0.072500, -0.082500, -0.077500
+#*# 	  0.007500, 0.000000, 0.005000, -0.002500, -0.007500, -0.015000, -0.020000, -0.015000
+#*# 	  0.097500, 0.092500, 0.082500, 0.072500, 0.085000, 0.070000, 0.055000, 0.042500
+#*# 	  0.205000, 0.187500, 0.182500, 0.172500, 0.182500, 0.160000, 0.130000, 0.112500
+#*# x_count = 8
+#*# y_count = 6
+#*# min_x = 0.0
+#*# max_x = 179.97
+#*# min_y = 5.0
+#*# max_y = 140.0
+#*# x_offset = 20.0
+#*# y_offset = 0.0
+#*# mesh_x_pps = 2
+#*# mesh_y_pps = 2
+#*# algo = bicubic
+#*# tension = 0.2
