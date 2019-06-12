@@ -9,7 +9,7 @@ enable_pin: !PB16
 step_distance: .0125
 endstop_pin: ^PA11
 position_endstop: 0
-position_max: 152
+position_max: 200
 homing_speed: 60
 homing_retract_dist: 3.0
 second_homing_speed:20
@@ -20,11 +20,11 @@ dir_pin: !PB1
 enable_pin: !PB0
 step_distance: .0125
 endstop_pin: ^PB26
-position_endstop: 152
-position_max: 152
-homing_speed: 25
+position_endstop: 150
+position_max: 165
+homing_speed: 60
 homing_retract_dist: 5
-second_homing_speed:5
+second_homing_speed:20
 homing_positive_dir:true
 
 [stepper_z]
@@ -35,11 +35,11 @@ step_distance: .0025
 #endstop_pin: ^!PA10
 endstop_pin: probe:z_virtual_endstop
 position_endstop: 0
-position_min: 0
-position_max: 5000
+position_min: -2
+position_max: 200
 homing_speed: 30
-homing_retract_dist: 0
-second_homing_speed:1
+homing_retract_dist: 4.0
+second_homing_speed:8
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -47,7 +47,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1
+value: 0.8
 
 [output_pin motor_y_pwm]
 pin: PB19
@@ -55,7 +55,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1
+value: 0.8
 
 [output_pin motor_z_pwm]
 pin: PB18
@@ -63,7 +63,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1.2
+value: 0.8
 
 [output_pin motor_e_pwm]
 pin: PA2
@@ -94,10 +94,10 @@ enable_pin: !PB22
 step_distance = 0.0079051383
 nozzle_diameter: 0.4
 filament_diameter: 1.750
-max_extrude_cross_section: 5
+max_extrude_cross_section: 10
 max_extrude_only_distance: 150
 pressure_advance: 0.05
-pressure_advance_lookahead_time: 0.015
+pressure_advance_lookahead_time: 0.010
 heater_pin: PA5
 max_power: 1.0
 sensor_type: G2
@@ -106,7 +106,7 @@ inline_resistor: 4700
 control = pid
 pid_kp = 39.658
 pid_ki = 4.558
-pid_kd = 100
+pid_kd = 86.255
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
@@ -119,14 +119,13 @@ max_error: 160
 gcode: M84
 timeout: 600
 
-[heater_bed]
-heater_pin: PB24
-sensor_type: G2
-sensor_pin: PA4
-inline_resistor: 4700
-control: watermark
-min_temp: 0
-max_temp: 85
+#[heater_bed]
+#heater_pin: PB24
+#sensor_type: EPCOS 100K B57560G104F
+#sensor_pin: PA4
+#control: watermark
+#min_temp: 0
+#max_temp: 110
 
 [fan]
 pin: PB27
@@ -140,10 +139,10 @@ fan_speed: 1
 [printer]
 kinematics: cartesian
 max_velocity: 500
-max_accel: 1800
+max_accel: 2000
 max_accel_to_decel:1500
-max_z_velocity: 5
-max_z_accel: 1
+max_z_velocity: 15
+max_z_accel: 150
 square_corner_velocity: 25
 
 [static_digital_output step_config]
@@ -174,14 +173,47 @@ gcode: M84
 timeout: 600
 
 [probe]
-x_offset = 0
+x_offset = 20
 pin: ^!PA10
-speed = 1
+speed = 15
 samples: 1
 z_offset = 0
 sample_retract_dist: 3.0
 samples_result: average
 
+[bed_mesh]
+speed = 350
+min_point: 0,2
+max_point: 180,140
+probe_count = 8,6
+bicubic_tension = .2
+mesh_pps = 2,2
+algorithm = bicubic
+fade_start: 1.0
+#   The gcode z position in which to start phasing out z-adjustment
+#   when fade is enabled.  Default is 1.0.
+fade_end: 18
+#   The gcode z position in which phasing out completes.  When set
+#   to a value below fade_start, fade is disabled. It should be
+#   noted that fade may add unwanted scaling along the z-axis of a
+#   print.  If a user wishes to enable fade, a value of 10.0 is
+#   recommended. Default is 0.0, which disables fade.
+#fade_target:
+#   The z position in which fade should converge. When this value is set
+#   to a non-zero value it must be within the range of z-values in the mesh.
+#   Users that wish to converge to the z homing position should set this to 0.
+#   Default is the average z value of the mesh.
+
+
+[gcode_macro G29]
+gcode:
+ BED_MESH_CALIBRATE
+
+[gcode_macro G27]
+gcode:
+ G28
+ G1 Z10
+ PROBE_CALIBRATE
 [gcode_macro M500]
 gcode:
  SAVE_CONFIG
