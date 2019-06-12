@@ -9,31 +9,32 @@ enable_pin: !PB16
 step_distance: .0125
 endstop_pin: ^PA11
 position_endstop: 0
-position_max: 152
+position_max: 153
 homing_speed: 60
 homing_retract_dist: 3.0
 second_homing_speed:20
 
 [stepper_y]
 step_pin: PA29
-dir_pin: !PB1
+dir_pin: PB1
 enable_pin: !PB0
 step_distance: .0125
 endstop_pin: ^PB26
 position_endstop: 152
-position_max: 152
-homing_speed: 25
+#position_min: 0
+position_max: 153
+homing_speed: 10
 homing_retract_dist: 5
 second_homing_speed:5
-homing_positive_dir:true
+homing_positive_dir: True
 
 [stepper_z]
 step_pin: PA21
 dir_pin: PA26
 enable_pin: !PA25
-step_distance: .0025
-#endstop_pin: ^!PA10
-endstop_pin: probe:z_virtual_endstop
+step_distance: 0.013125
+endstop_pin: PA10
+#endstop_pin: probe:z_virtual_endstop
 position_endstop: 0
 position_min: 0
 position_max: 5000
@@ -41,13 +42,25 @@ homing_speed: 30
 homing_retract_dist: 0
 second_homing_speed:1
 
+[homing_override]
+set_position_z: 0
+set_position_y: 0
+axes: xyz
+gcode:
+    G90
+    G1 Y15 Z5 F2500
+    G1 Y0 F2000
+    G28 X0
+
+
+
 [output_pin motor_x_pwm]
 pin: PB17
 pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1
+value: .8
 
 [output_pin motor_y_pwm]
 pin: PB19
@@ -63,7 +76,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1.2
+value: 1
 
 [output_pin motor_e_pwm]
 pin: PA2
@@ -94,9 +107,9 @@ enable_pin: !PB22
 step_distance = 0.0079051383
 nozzle_diameter: 0.4
 filament_diameter: 1.750
-max_extrude_cross_section: 5
+max_extrude_cross_section: 25
 max_extrude_only_distance: 150
-pressure_advance: 0.05
+pressure_advance: 0.065
 pressure_advance_lookahead_time: 0.015
 heater_pin: PA5
 max_power: 1.0
@@ -144,43 +157,26 @@ max_accel: 1800
 max_accel_to_decel:1500
 max_z_velocity: 5
 max_z_accel: 1
-square_corner_velocity: 25
+square_corner_velocity: 7
 
 [static_digital_output step_config]
 pins: PA19, PB20, PA27, PB10
-
-#[endstop_phase stepper_z]
-#phases: 147
-#endstop_accuracy: 0.200
-
-[homing_override]
-set_position_z: 0
-axes: z
-gcode:
-    G90 ; Uncomment these 2 lines to blindly lift the Z 5mm at start
-    G1 Z5 F600
-    G28 X0 Y0
-    G1 X110 Y75 F3600
-    G28 Z0
 
 [pause_resume]
 recover_velocity: 15
 
 [idle_timeout]
 gcode: M84
-#   A list of G-Code commands (one per line; subsequent lines
-#   indented) to execute on an idle timeout. The default is to run
-#   "TURN_OFF_HEATERS" and "M84".
-timeout: 600
+timeout: 800
 
-[probe]
-x_offset = 0
-pin: ^!PA10
-speed = 1
-samples: 1
-z_offset = 0
-sample_retract_dist: 3.0
-samples_result: average
+#[probe]
+#x_offset = 0
+#pin: ^!PA10
+#speed = 1
+#samples: 1
+#z_offset = 0
+#sample_retract_dist: 3.0
+#samples_result: average
 
 [gcode_macro M500]
 gcode:
