@@ -6,8 +6,10 @@
 
 Option 1 Download the config file and follow the installation instructions.
 
-Option 2 Download the Raspberry Pi Octoprint image, you will have to flash your controller but the hard work has already been done.
+Option 2 Download the Raspberry Pi Octoprint image. The printrboard will need to be flashed, but the hard work has already been done.
+
 You will need a 16 Gb SD card
+
 https://docs.google.com/document/d/1a2pSCrTU5F4PQF-cdHiCjmBmUJKTg1H6sDxn2OdDtaw/edit?usp=sharing
 
 https://www.klipper3d.org/Installation.html
