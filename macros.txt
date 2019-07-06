@@ -1,0 +1,133 @@
+
+
+[gcode_macro G26]
+gcode:
+ BED_SCREWS_ADJUST
+
+[gcode_macro G27]
+gcode:
+ PROBE_CALIBRATE
+
+[gcode_macro M500]
+gcode:
+ SAVE_CONFIG
+
+[gcode_macro M501]
+gcode:
+ STATUS
+
+[gcode_macro M503]
+gcode:
+ HELP
+
+[pause_resume]
+recover_velocity: 20
+
+
+[gcode_macro M600]
+default_parameter_X: 50
+default_parameter_Y: 0
+default_parameter_Z: 10
+gcode:
+    SAVE_GCODE_STATE NAME=M600_state
+    PAUSE
+    G91
+    G1 E-.8 F2700
+    G1 Z{Z}
+    G90
+    G1 X{X} Y{Y} F3000
+    G91
+    G1 E-50 F1000
+    RESTORE_GCODE_STATE NAME=M600_state
+
+
+[gcode_macro PARK_MACRO]
+default_parameter_X: 0
+default_parameter_Y: 0
+default_parameter_Z: 10
+gcode:
+        M117 PARKING..
+        G91
+        G1 E-3.14 F1500
+        G1 Z{Z}
+    G90
+    G1 X{X} Y{Y} F3000
+
+[gcode_macro UNLOAD]
+gcode:
+    G91
+        G1 E5.0 F1200
+        G1 E3.0 F1600
+        G1 E-13.14 F7000
+    G1 E-50 F3000
+    G90
+
+[gcode_macro LOAD_FILAMENT]
+gcode:
+        M117  LOADING...
+        G91
+        G1 E25.0 F1500
+        G1 E20 F2500
+        G4 P900
+        G1 E5 F250
+        G90
+
+[gcode_macro PURGE]
+gcode:
+        M117 PURGING..
+        G91
+        G1 E45.0 F250
+        G90
+
+[gcode_macro G80]
+gcode:
+ G28
+ BED_MESH_CALIBRATE
+ G1 X0 Y0 Z0.4 F4000
+
+[gcode_macro G81]
+gcode:
+ BED_MESH_OUTPUT
+
+[gcode_macro G29]
+gcode:
+ BED_MESH_CALIBRATE
+
+
+
+ [gcode_macro START_PRINT]
+default_parameter_BED_TEMP: 60
+default_parameter_EXTRUDER_TEMP: 190
+gcode:
+    # Start bed heating
+    M140 S{BED_TEMP}
+    # Use absolute coordinates
+    G90
+    # Reset the G-Code Z offset (adjust Z offset if needed)
+    SET_GCODE_OFFSET Z=0.0
+    # Home the printer and level
+    G28
+    G29
+    # Move the nozzle near the bed
+    G1 Z5 F3000
+    # Move the nozzle very close to the bed
+    G1 Z0.15 F300
+    # Wait for bed to reach temperature
+    M190 S{BED_TEMP}
+    # Set and wait for nozzle to reach temperature
+    M109 S{EXTRUDER_TEMP}
+
+[gcode_macro END_PRINT]
+gcode:
+    # Turn off bed, extruder, and fan
+    M140 S0
+    M104 S0
+    M106 S0
+    # Move nozzle away from print while retracting
+    G91
+    G1 X-2 Y-2 E-3 F300
+    # Raise nozzle by 10mm
+    G1 Z10 F3000
+    G90
+    # Disable steppers
+    M84
