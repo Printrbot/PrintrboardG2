@@ -103,10 +103,10 @@ max_power: 1.0
 sensor_type: G2
 sensor_pin: PA23
 inline_resistor: 4700
-#control = pid
-#pid_kp = 39.658
-#pid_ki = 4.558
-#pid_kd = 86.255
+control = pid
+pid_kp = 39.658
+pid_ki = 4.558
+pid_kd = 86.255
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
@@ -175,7 +175,7 @@ x_offset = 20
 pin: ^!PA10
 speed = 15
 samples: 1
-#z_offset = 0.00
+z_offset = 0.00
 sample_retract_dist: 3.0
 samples_result: average
 
@@ -335,36 +335,3 @@ gcode:
   SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=0 BLUE=0
   SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0 GREEN=1 BLUE=1
   SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
-
-#*# <---------------------- SAVE_CONFIG ---------------------->
-#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
-#*#
-#*# [extruder]
-#*# control = pid
-#*# pid_kp = 39.168
-#*# pid_ki = 4.352
-#*# pid_kd = 88.127
-#*#
-#*# [bed_mesh default]
-#*# points =
-#*#     0.072500, -0.012500, -0.082500, -0.110000, -0.115000, -0.100000, -0.040000, 0.057500
-#*#     0.085000, -0.010000, -0.077500, -0.102500, -0.100000, -0.072500, -0.007500, 0.097500
-#*#     0.085000, -0.007500, -0.075000, -0.105000, -0.092500, -0.057500, 0.017500, 0.132500
-#*#     0.075000, -0.022500, -0.087500, -0.117500, -0.097500, -0.062500, 0.025000, 0.150000
-#*#     0.035000, -0.062500, -0.115000, -0.132500, -0.122500, -0.062500, 0.022500, 0.155000
-#*#     -0.027500, -0.117500, -0.160000, -0.170000, -0.155000, -0.092500, -0.007500, 0.122500
-#*# x_count = 8
-#*# y_count = 6
-#*# min_x = 0.0
-#*# max_x = 179.97
-#*# min_y = 5.0
-#*# max_y = 140.0
-#*# x_offset = 20.0
-#*# y_offset = 0.0
-#*# mesh_x_pps = 2
-#*# mesh_y_pps = 2
-#*# algo = bicubic
-#*# tension = 0.2
-#*#
-#*# [probe]
-#*# z_offset = 0.330
