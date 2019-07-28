@@ -37,7 +37,7 @@ endstop_pin: probe:z_virtual_endstop
 position_endstop: 0
 position_min: -3
 position_max: 200
-homing_speed: 13.333
+homing_speed: 30
 homing_retract_dist: 4.0
 second_homing_speed:8
 
@@ -96,17 +96,17 @@ nozzle_diameter: 0.4
 filament_diameter: 1.750
 max_extrude_cross_section: 5
 max_extrude_only_distance: 150
-pressure_advance: 0.045
-pressure_advance_lookahead_time: 0.01
+pressure_advance: 0.025
+pressure_advance_lookahead_time: 0.012
 heater_pin: PA5
 max_power: 1.0
 sensor_type: G2
 sensor_pin: PA23
 inline_resistor: 4700
 control = pid
-pid_kp = 39.168
-pid_ki = 4.352
-pid_kd = 88.127
+pid_kp = 39.658
+pid_ki = 4.558
+pid_kd = 86.255
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
@@ -119,13 +119,17 @@ max_error: 160
 gcode: M84
 timeout: 600
 
-[heater_bed]
-heater_pin: PB24
-sensor_type: EPCOS 100K B57560G104F
-sensor_pin: PA4
-control: watermark
-min_temp: 0
-max_temp: 90
+#[heater_bed]
+#heater_pin: PB24
+#sensor_type: G2
+#sensor_pin: PA4
+#inline_resistor: 4700
+#control = pid
+#pid_kp = 75.898
+#pid_ki = 1.538
+#pid_kd = 936.387
+#min_temp: 0
+#max_temp: 90
 
 [fan]
 pin: PB27
@@ -139,7 +143,7 @@ fan_speed: 1
 [printer]
 kinematics: cartesian
 max_velocity: 375
-max_accel: 1250
+max_accel: 1550
 max_accel_to_decel:900
 max_z_velocity: 13.3
 max_z_accel: 200
@@ -147,10 +151,6 @@ square_corner_velocity: 20
 
 [static_digital_output step_config]
 pins: PA19, PB20, PA27, PB10
-
-#[endstop_phase stepper_z]
-#phases: 147
-#endstop_accuracy: 0.200
 
 [homing_override]
 set_position_z: 0
@@ -162,6 +162,9 @@ gcode:
     G1 X110 Y75 F3600
     G28 Z0
     G1 Z15
+
+[pause_resume]
+recover_velocity: 15
 
 [idle_timeout]
 gcode: M84
@@ -177,20 +180,19 @@ sample_retract_dist: 3.0
 samples_result: average
 
 [bed_screws]
-screw1: 5,145
-screw2: 5,5
+screw1: 10,145
+screw2: 10,10
 screw3: 200,0
 screw4: 200,145
 
 [bed_mesh]
-speed = 350
+speed = 375
 min_point: 0,5
 max_point: 180,140
 probe_count = 6,4
 bicubic_tension = .2
 mesh_pps = 2,2
 algorithm = bicubic
-
 
 [gcode_macro G26]
 gcode:
@@ -286,8 +288,7 @@ gcode:
  BED_MESH_CALIBRATE
 
 
-
- [gcode_macro START_PRINT]
+[gcode_macro START_PRINT]
 default_parameter_BED_TEMP: 60
 default_parameter_EXTRUDER_TEMP: 190
 gcode:
@@ -323,3 +324,14 @@ gcode:
     G90
     # Disable steppers
     M84
+
+# "SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0.1 GREEN=0.1 BLUE=0.1" type
+# extended g-code commands.
+[neopixel my_neopixel]
+pin: PB12
+
+[gcode_macro NEOSTART]
+gcode:
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=0 BLUE=0
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0 GREEN=1 BLUE=1
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
