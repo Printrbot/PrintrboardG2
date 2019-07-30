@@ -2,6 +2,9 @@
 serial: /dev/serial/by-id/usb-Klipper_Klipper_firmware_12345-if00
 baud: 250000
 
+#If your stepper motors turn the wrong way remove the ! infront of dir_pin
+#
+
 [stepper_x]
 step_pin: PB15
 dir_pin: !PA16
@@ -74,7 +77,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 1
+value: .8
 
 [output_pin heater_enable]
 pin: PA7
@@ -122,7 +125,10 @@ max_error: 160
 gcode: M84
 timeout: 600
 
-#Commented out lines below to dissable Heated Bed
+
+#If you have a heated bed connected to your G2 this code MUST be enabled
+#Otherwise the heated bed will turn on by default this is a bug we will soon fix
+#Remove the section below ONLY if you have disconnected the heated bed power wires
 [heater_bed]
 heater_pin: PB24
 sensor_type: G2
@@ -147,7 +153,7 @@ fan_speed: 1
 [printer]
 kinematics: cartesian
 max_velocity: 400
-max_accel: 1550
+max_accel: 1450
 max_accel_to_decel:900
 max_z_velocity: 15
 max_z_accel: 200
