@@ -1,0 +1,14 @@
+These Settings will give higher quality prints
+
+Shell
+Fill Gaps Between Walls - Nowhere
+Optimize Wall Printing Order - On
+
+Travel
+Combing Mode - Off
+Retract Before Outer Wall - On
+Z - Hop - Off
+
+Turn off Coasting
+
+More information klipper3d.org

@@ -9,8 +9,8 @@ enable_pin: !PB16
 step_distance: .0125
 endstop_pin: ^PA11
 position_endstop: 0
-position_max: 200
-homing_speed: 60
+position_max: 225
+homing_speed: 50
 homing_retract_dist: 3.0
 second_homing_speed:20
 
@@ -20,9 +20,9 @@ dir_pin: PB1
 enable_pin: !PB0
 step_distance: .0125
 endstop_pin: ^PB26
-position_endstop: 150
-position_max: 165
-homing_speed: 60
+position_endstop: 162
+position_max: 162
+homing_speed: 75
 homing_retract_dist: 5
 second_homing_speed:20
 homing_positive_dir:true
@@ -41,13 +41,16 @@ homing_speed: 30
 homing_retract_dist: 4.0
 second_homing_speed:8
 
+
+#The value fields below control stepper current
+
 [output_pin motor_x_pwm]
 pin: PB17
 pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 0.8
+value: 0.6
 
 [output_pin motor_y_pwm]
 pin: PB19
@@ -55,7 +58,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 0.8
+value: 0.6
 
 [output_pin motor_z_pwm]
 pin: PB18
@@ -63,7 +66,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 0.8
+value: 0.6
 
 [output_pin motor_e_pwm]
 pin: PA2
@@ -96,8 +99,8 @@ nozzle_diameter: 0.4
 filament_diameter: 1.750
 max_extrude_cross_section: 5
 max_extrude_only_distance: 150
-pressure_advance: 0.025
-pressure_advance_lookahead_time: 0.012
+pressure_advance: 0.030
+pressure_advance_lookahead_time: 0.010
 heater_pin: PA5
 max_power: 1.0
 sensor_type: G2
@@ -119,6 +122,7 @@ max_error: 160
 gcode: M84
 timeout: 600
 
+#Commented out lines below to dissable Heated Bed
 [heater_bed]
 heater_pin: PB24
 sensor_type: G2
@@ -142,10 +146,10 @@ fan_speed: 1
 
 [printer]
 kinematics: cartesian
-max_velocity: 375
+max_velocity: 400
 max_accel: 1550
 max_accel_to_decel:900
-max_z_velocity: 13.3
+max_z_velocity: 15
 max_z_accel: 200
 square_corner_velocity: 20
 
@@ -180,8 +184,8 @@ sample_retract_dist: 3.0
 samples_result: average
 
 [bed_screws]
-screw1: 5,145
-screw2: 5,5
+screw1: 10,145
+screw2: 10,10
 screw3: 200,0
 screw4: 200,145
 
@@ -325,13 +329,26 @@ gcode:
     # Disable steppers
     M84
 
+# Neopixel (aka WS2812) LED support (one may define any number of
+# sections with a "neopixel" prefix). One may set the LED color via a
 # "SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0.1 GREEN=0.1 BLUE=0.1" type
 # extended g-code commands.
 [neopixel my_neopixel]
 pin: PB12
+#   The pin connected to the neopixel. This parameter must be
+#   provided.
+chain_count: 3
+#   The number of Neopixel chips that are "daisy chained" to the
+#   provided pin. The default is 1 (which indices only a single
+#   Neopixel is connected to the pin).
+initial_RED: 1
+initial_GREEN: 1
+initial_BLUE: 1
+#   Sets the initial LED color of the Neopixel. Each value should be
+#   between 0.0 and 1.0. The default for each color is 0.
 
 [gcode_macro NEOSTART]
 gcode:
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=0 BLUE=0
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0 GREEN=1 BLUE=1
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
   SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
