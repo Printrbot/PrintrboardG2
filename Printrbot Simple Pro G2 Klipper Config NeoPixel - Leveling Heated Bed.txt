@@ -2,12 +2,9 @@
 serial: /dev/serial/by-id/usb-Klipper_Klipper_firmware_12345-if00
 baud: 250000
 
-#If your stepper motors turn the wrong way remove the ! infront of dir_pin
-#
-
 [stepper_x]
 step_pin: PB15
-dir_pin: !PA16
+dir_pin: PA16
 enable_pin: !PB16
 step_distance: .0125
 endstop_pin: ^PA11
@@ -19,12 +16,12 @@ second_homing_speed:20
 
 [stepper_y]
 step_pin: PA29
-dir_pin: PB1
+dir_pin: !PB1
 enable_pin: !PB0
 step_distance: .0125
 endstop_pin: ^PB26
-position_endstop: 162
-position_max: 162
+position_endstop: 160
+position_max: 160
 homing_speed: 75
 homing_retract_dist: 5
 second_homing_speed:20
@@ -43,9 +40,6 @@ position_max: 200
 homing_speed: 30
 homing_retract_dist: 4.0
 second_homing_speed:8
-
-
-#The value fields below control stepper current
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -69,7 +63,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 0.6
+value: 0.65
 
 [output_pin motor_e_pwm]
 pin: PA2
@@ -109,10 +103,10 @@ max_power: 1.0
 sensor_type: G2
 sensor_pin: PA23
 inline_resistor: 4700
-control = pid
-pid_kp = 39.658
-pid_ki = 4.558
-pid_kd = 86.255
+#control = pid
+#pid_kp = 39.658
+#pid_ki = 4.558
+#pid_kd = 86.255
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
@@ -123,12 +117,8 @@ hysteresis: 2
 max_error: 160
 [idle_timeout]
 gcode: M84
-timeout: 600
+timeout: 3500
 
-
-#If you have a heated bed connected to your G2 this code MUST be enabled
-#Otherwise the heated bed will turn on by default this is a bug we will soon fix
-#Remove the section below ONLY if you have disconnected the heated bed power wires
 [heater_bed]
 heater_pin: PB24
 sensor_type: G2
@@ -152,12 +142,12 @@ fan_speed: 1
 
 [printer]
 kinematics: cartesian
-max_velocity: 400
-max_accel: 1450
+max_velocity: 500
+max_accel: 1400
 max_accel_to_decel:900
-max_z_velocity: 15
+max_z_velocity: 18
 max_z_accel: 200
-square_corner_velocity: 20
+square_corner_velocity: 25
 
 [static_digital_output step_config]
 pins: PA19, PB20, PA27, PB10
@@ -355,6 +345,6 @@ initial_BLUE: 1
 
 [gcode_macro NEOSTART]
 gcode:
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=0 BLUE=0
+  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0 GREEN=1 BLUE=1
   SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
