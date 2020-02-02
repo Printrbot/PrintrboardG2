@@ -91,7 +91,7 @@ resistance3: 189
 step_pin: PB14
 dir_pin: PB23
 enable_pin: !PB22
-step_distance = 0.0079051383
+step_distance : 0.0079051383
 nozzle_diameter: 0.4
 filament_diameter: 1.750
 max_extrude_cross_section: 5
@@ -102,10 +102,10 @@ max_power: 1.0
 sensor_type: G2
 sensor_pin: PA23
 inline_resistor: 4700
-control = pid
-pid_kp = 39.658
-pid_ki = 4.558
-pid_kd = 86.255
+control : pid
+pid_kp : 39.658
+pid_ki : 4.558
+pid_kd : 86.255
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
@@ -123,10 +123,10 @@ heater_pin: PB24
 sensor_type: G2
 sensor_pin: PA4
 inline_resistor: 4700
-control = pid
-pid_kp = 75.898
-pid_ki = 1.538
-pid_kd = 936.387
+control : pid
+pid_kp : 75.898
+pid_ki : 1.538
+pid_kd : 936.387
 min_temp: 0
 max_temp: 90
 
@@ -170,11 +170,11 @@ gcode: M84
 timeout: 600
 
 [probe]
-x_offset = 20
+x_offset: 20
 pin: ^!PA10
-speed = 15
+speed : 15
 samples: 1
-z_offset = 0.00
+z_offset : 0.00
 sample_retract_dist: 3.0
 samples_result: average
 
@@ -192,13 +192,13 @@ horizontal_move_z: 8
 screw_thread: CCW-M3
 
 [bed_mesh]
-speed = 375
-mesh_min: 0,5
-mesh_max: 180,140
-probe_count = 3,3
-bicubic_tension = .2
-mesh_pps = 2,2
-algorithm = bicubic
+speed : 375
+mesh_min: 20,5
+mesh_max: 205,140
+probe_count : 3,3
+bicubic_tension : .2
+mesh_pps : 2,2
+algorithm : bicubic
 
 [neopixel my_neopixel]
 pin: PB12
@@ -239,7 +239,7 @@ default_parameter_X: 50
 default_parameter_Y: 0
 default_parameter_Z: 10
 gcode:
-    SAVE_GCODE_STATE NAME=M600_state
+    SAVE_GCODE_STATE NAME:M600_state
     PAUSE
     G91
     G1 E-.8 F2700
@@ -248,7 +248,7 @@ gcode:
     G1 X{X} Y{Y} F3000
     G91
     G1 E-50 F1000
-    RESTORE_GCODE_STATE NAME=M600_state
+    RESTORE_GCODE_STATE NAME:M600_state
 
 [gcode_macro PARK_MACRO]
 default_parameter_X: 0
@@ -329,6 +329,6 @@ gcode:
 
 [gcode_macro NEOSTART]
 gcode:
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=0 BLUE=0
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0 GREEN=1 BLUE=1
-  SET_NEOPIXEL NEOPIXEL=my_neopixel RED=1 GREEN=1 BLUE=1
+  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:1 GREEN:0 BLUE:0
+  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:0 GREEN:1 BLUE:1
+  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:1 GREEN:1 BLUE:1
