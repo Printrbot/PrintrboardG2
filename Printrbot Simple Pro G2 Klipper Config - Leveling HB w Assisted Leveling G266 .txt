@@ -1,5 +1,5 @@
 [mcu]
-serial: /dev/serial/by-id/usb-Klipper_sam3x8c_203120514D313038323430303A303039-if00
+serial: /dev/serial/by-id/usb-Klipper_sam3x8c_203120514D3052593230303034303232-if00
 baud: 250000
 
 [stepper_x]
@@ -96,8 +96,7 @@ nozzle_diameter: 0.4
 filament_diameter: 1.750
 max_extrude_cross_section: 5
 max_extrude_only_distance: 150
-pressure_advance: 0.08
-pressure_advance_lookahead_time: 0.010
+pressure_advance: 0.07
 heater_pin: PA5
 max_power: 1.0
 sensor_type: G2
@@ -179,15 +178,6 @@ z_offset = 0.00
 sample_retract_dist: 3.0
 samples_result: average
 
-[bed_screws]
-screw1: 10,20
-screw2: 200,20
-screw3: 200,145
-screw4: 10,145
-
-# Tool to help adjust bed screws tilt using Z probe. One may define a
-# [screws_tilt_adjust] config section to enable a SCREWS_TILT_CALCULATE
-# g-code command.
 [screws_tilt_adjust]
 screw1: 0,5
 screw1_name: front left
@@ -209,6 +199,13 @@ probe_count = 3,3
 bicubic_tension = .2
 mesh_pps = 2,2
 algorithm = bicubic
+
+[neopixel my_neopixel]
+pin: PB12
+chain_count: 3
+initial_RED: 1
+initial_GREEN: 1
+initial_BLUE: 1
 
 [gcode_macro G26]
 gcode:
@@ -258,10 +255,10 @@ default_parameter_X: 0
 default_parameter_Y: 0
 default_parameter_Z: 10
 gcode:
-        M117 PARKING..
-        G91
-        G1 E-3.14 F1500
-        G1 Z{Z}
+    M117 PARKING..
+    G91
+    G1 E-3.14 F1500
+    G1 Z{Z}
     G90
     G1 X{X} Y{Y} F3000
 
@@ -329,14 +326,6 @@ gcode:
     G1 Z10 F3000
     G90
     M84
-
-# "SET_NEOPIXEL NEOPIXEL=my_neopixel RED=0.1 GREEN=0.1 BLUE=0.1"
-[neopixel my_neopixel]
-pin: PB12
-chain_count: 3
-initial_RED: 1
-initial_GREEN: 1
-initial_BLUE: 1
 
 [gcode_macro NEOSTART]
 gcode:
