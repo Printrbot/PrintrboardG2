@@ -37,9 +37,9 @@ endstop_pin: probe:z_virtual_endstop
 position_endstop: 0
 position_min: -3
 position_max: 200
-homing_speed: 30
+homing_speed: 13
 homing_retract_dist: 4.0
-second_homing_speed:8
+second_homing_speed:7
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -79,14 +79,6 @@ pwm: True
 cycle_time: 0.1
 value: 0.1
 
-[thermistor G2]
-temperature1: 20
-resistance1: 140000
-temperature2: 195
-resistance2: 593
-temperature3: 255
-resistance3: 189
-
 [extruder]
 step_pin: PB14
 dir_pin: PB23
@@ -99,36 +91,28 @@ max_extrude_only_distance: 150
 pressure_advance: 0.07
 heater_pin: PA5
 max_power: 1.0
-sensor_type: G2
+sensor_type: EPCOS 100K B57560G104F
 sensor_pin: PA23
 inline_resistor: 4700
 control : pid
-pid_kp : 39.658
-pid_ki : 4.558
-pid_kd : 86.255
+pid_kp : 36.401
+pid_ki : 4.333
+pid_kd : 76.443
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
-[verify_heater extruder]
-heating_gain: 2
-check_gain_time:25
-hysteresis: 2
-max_error: 160
-[idle_timeout]
-gcode: M84
-timeout: 3500
 
 [heater_bed]
 heater_pin: PB24
-sensor_type: G2
+sensor_type: EPCOS 100K B57560G104F
 sensor_pin: PA4
 inline_resistor: 4700
 control : pid
-pid_kp : 75.898
-pid_ki : 1.538
-pid_kd : 936.387
+pid_kp : 73.666
+pid_ki : 2.506
+pid_kd : 541.443
 min_temp: 0
-max_temp: 90
+max_temp: 95
 
 [fan]
 pin: PB27
@@ -144,8 +128,8 @@ kinematics: cartesian
 max_velocity: 600
 max_accel: 1500
 max_accel_to_decel:1000
-max_z_velocity: 18
-max_z_accel: 200
+max_z_velocity: 15
+max_z_accel: 150
 square_corner_velocity: 25
 
 [static_digital_output step_config]
@@ -172,11 +156,14 @@ timeout: 600
 [probe]
 x_offset: 20
 pin: ^!PA10
-speed : 15
-samples: 1
-z_offset : 0.00
-sample_retract_dist: 3.0
+speed : 1
+lift_speed: 7
+samples: 2
+sample_retract_dist: 1
 samples_result: average
+samples_tolerance: 0.009
+samples_tolerance_retries: 3
+z_offset : 0
 
 [screws_tilt_adjust]
 screw1: 0,5
@@ -192,7 +179,7 @@ horizontal_move_z: 8
 screw_thread: CCW-M3
 
 [bed_mesh]
-speed : 375
+speed : 200
 mesh_min: 20,5
 mesh_max: 205,140
 probe_count : 3,3
@@ -302,7 +289,6 @@ gcode:
 gcode:
  BED_MESH_CALIBRATE
 
-
 [gcode_macro START_PRINT]
 default_parameter_BED_TEMP: 60
 default_parameter_EXTRUDER_TEMP: 190
@@ -311,8 +297,6 @@ gcode:
     G90
     G28
     G29
-    G1 Z5 F3000
-    G1 Z0.15 F300
     M190 S{BED_TEMP}
     M109 S{EXTRUDER_TEMP}
 
