@@ -39,7 +39,7 @@ position_min: -3
 position_max: 200
 homing_speed: 13
 homing_retract_dist: 4.0
-second_homing_speed:7
+second_homing_speed:4
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -71,7 +71,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: .8
+value: 1
 
 [output_pin heater_enable]
 pin: PA7
@@ -127,10 +127,10 @@ fan_speed: 1
 kinematics: cartesian
 max_velocity: 600
 max_accel: 1500
-max_accel_to_decel:1000
-max_z_velocity: 15
+max_accel_to_decel: 900
+max_z_velocity: 13
 max_z_accel: 150
-square_corner_velocity: 25
+square_corner_velocity: 35
 
 [static_digital_output step_config]
 pins: PA19, PB20, PA27, PB10
@@ -147,7 +147,7 @@ gcode:
     G1 Z15
 
 [pause_resume]
-recover_velocity: 15
+recover_velocity: 25
 
 [idle_timeout]
 gcode: M84
@@ -162,7 +162,7 @@ samples: 2
 sample_retract_dist: 1
 samples_result: average
 samples_tolerance: 0.009
-samples_tolerance_retries: 3
+samples_tolerance_retries: 5
 z_offset : 0
 
 [screws_tilt_adjust]
@@ -189,7 +189,7 @@ algorithm : bicubic
 
 [neopixel my_neopixel]
 pin: PB12
-chain_count: 3
+chain_count: 4
 initial_RED: 1
 initial_GREEN: 1
 initial_BLUE: 1
@@ -311,8 +311,27 @@ gcode:
     G90
     M84
 
-[gcode_macro NEOSTART]
+[gcode_macro LEDOFF]
 gcode:
-  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:1 GREEN:0 BLUE:0
-  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:0 GREEN:1 BLUE:1
-  SET_NEOPIXEL NEOPIXEL:my_neopixel RED:1 GREEN:1 BLUE:1
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
+
+[gcode_macro LEDRED]
+gcode:
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=2
+SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=4
+SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=1
+
+[gcode_macro LEDGREEN]
+gcode:
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
+SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=2
+SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=1
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=3
+
+[gcode_macro LEDGREEN]
+gcode:
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
+SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=1
+SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=4
+SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=3
