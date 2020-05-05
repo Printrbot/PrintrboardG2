@@ -8,14 +8,9 @@
 
 ![Klipper on Simple Pro](Simple-Pro-Klipper.jpg)
 
-* Option 1: Download the config file and follow the installation instructions. - Best Option
-   Requires a Raspberry Pi 3 and Octoprint
-
-* Option 2: Download the Raspberry Pi Octoprint image. 
-   The printrboard will need to be flashed
-   16Gb SD Card Required
-
-[SD Card Image](https://docs.google.com/document/d/1a2pSCrTU5F4PQF-cdHiCjmBmUJKTg1H6sDxn2OdDtaw/edit?usp=sharing)
+Download the config file and follow the installation instructions.
+Requires a Raspberry Pi 3 and Octoprint
+[Installation Guide Document](https://docs.google.com/document/d/1a2pSCrTU5F4PQF-cdHiCjmBmUJKTg1H6sDxn2OdDtaw/edit?usp=sharing)
 
 [Klipper Installation Guide](https://www.klipper3d.org/Installation.html)
 
