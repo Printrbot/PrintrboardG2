@@ -39,7 +39,7 @@ position_min: -3
 position_max: 200
 homing_speed: 13
 homing_retract_dist: 4.0
-second_homing_speed:4
+second_homing_speed:7
 
 [output_pin motor_x_pwm]
 pin: PB17
@@ -63,7 +63,7 @@ pwm: True
 hardware_pwm: True
 scale: 2.25
 cycle_time: .000004
-value: 0.65
+value: 0.6
 
 [output_pin motor_e_pwm]
 pin: PA2
@@ -79,6 +79,14 @@ pwm: True
 cycle_time: 0.1
 value: 0.1
 
+[thermistor G2]
+temperature1: 20
+resistance1: 140000
+temperature2: 195
+resistance2: 593
+temperature3: 255
+resistance3: 189
+
 [extruder]
 step_pin: PB14
 dir_pin: PB23
@@ -88,19 +96,25 @@ nozzle_diameter: 0.4
 filament_diameter: 1.750
 max_extrude_cross_section: 5
 max_extrude_only_distance: 150
-pressure_advance: 0.07
+pressure_advance: 0.0
 heater_pin: PA5
-max_power: 1.0
 sensor_type: EPCOS 100K B57560G104F
 sensor_pin: PA23
 inline_resistor: 4700
 control : pid
-pid_kp : 36.401
-pid_ki : 4.333
-pid_kd : 76.443
+pid_kp : 37.399 
+pid_ki : 4.155
+pid_kd : 84.147
 min_temp: 0
 max_temp: 290
 min_extrude_temp: 170
+smooth_time: 2
+#hysteresis: 10
+#heating_gain: 2
+
+[idle_timeout]
+gcode: M84
+timeout: 3500
 
 [heater_bed]
 heater_pin: PB24
@@ -112,10 +126,12 @@ pid_kp : 73.666
 pid_ki : 2.506
 pid_kd : 541.443
 min_temp: 0
-max_temp: 95
+max_temp: 90
+
 
 [fan]
 pin: PB27
+max_power: .7
 
 [heater_fan nozzle_cooling_fan]
 pin: PA6
@@ -126,9 +142,9 @@ fan_speed: 1
 [printer]
 kinematics: cartesian
 max_velocity: 600
-max_accel: 1500
-max_accel_to_decel: 900
-max_z_velocity: 13
+max_accel: 2000
+max_accel_to_decel:1000
+max_z_velocity: 15
 max_z_accel: 150
 square_corner_velocity: 35
 
@@ -147,7 +163,7 @@ gcode:
     G1 Z15
 
 [pause_resume]
-recover_velocity: 25
+recover_velocity: 15
 
 [idle_timeout]
 gcode: M84
@@ -162,7 +178,7 @@ samples: 2
 sample_retract_dist: 1
 samples_result: average
 samples_tolerance: 0.009
-samples_tolerance_retries: 5
+samples_tolerance_retries: 3
 z_offset : 0
 
 [screws_tilt_adjust]
@@ -179,7 +195,7 @@ horizontal_move_z: 8
 screw_thread: CCW-M3
 
 [bed_mesh]
-speed : 200
+speed : 250
 mesh_min: 20,5
 mesh_max: 205,140
 probe_count : 3,3
@@ -289,6 +305,7 @@ gcode:
 gcode:
  BED_MESH_CALIBRATE
 
+
 [gcode_macro START_PRINT]
 default_parameter_BED_TEMP: 60
 default_parameter_EXTRUDER_TEMP: 190
@@ -297,41 +314,35 @@ gcode:
     G90
     G28
     G29
+    G1 Z5 F3000
+    G1 Z0.15 F300
     M190 S{BED_TEMP}
     M109 S{EXTRUDER_TEMP}
 
 [gcode_macro END_PRINT]
 gcode:
-    M140 S0
-    M104 S0
-    M106 S0
-    G91
-    G1 X-2 Y-2 E-3 F300
-    G1 Z10 F3000
-    G90
-    M84
+ G4 ; Wait
+ M221 S100 ; set extrusion back to default
+ M104 S0 ; turn off temperature
+ M140 S0 ; turn off heatbed
+ M107 ; turn off fan
+ G92 Z0 ; reset
+ G1 X0 Y157 F3000 ; home X axis
+ M84 ; disable motors
 
-[gcode_macro LEDOFF]
+[gcode_macro START_PRINT_PROBEHOT]
+default_parameter_BED_TEMP: 60
 gcode:
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
-
-[gcode_macro LEDRED]
-gcode:
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=2
-SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=4
-SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=1
-
-[gcode_macro LEDGREEN]
-gcode:
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
-SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=2
-SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=1
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=3
-
-[gcode_macro LEDGREEN]
-gcode:
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=0
-SET_LED LED=my_neopixel RED=0 GREEN=0 BLUE=1 INDEX=1
-SET_LED LED=my_neopixel RED=1 GREEN=0 BLUE=0 INDEX=4
-SET_LED LED=my_neopixel RED=0 GREEN=1 BLUE=0 INDEX=3
+ M140 S{BED_TEMP}
+ G90
+ M83 ; extruder relative mode
+ M190 S{BED_TEMP}
+ G28
+ G29
+ SET_GCODE_OFFSET Z=-0.35
+ G92 E0.0
+ G1 Y5
+ G1 Z.2
+ G1 X10 E9.0 F1000.0 ; intro line
+ G1 X80 E12.5 F1000.0 ; intro line
+ G92 E0.0
